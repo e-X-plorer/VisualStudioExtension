@@ -48,22 +48,12 @@ namespace VSIXProject1
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static Command1 Instance
-        {
-            get;
-            private set;
-        }
+        public static Command1 Instance { get; private set; }
 
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        {
-            get
-            {
-                return this.package;
-            }
-        }
+        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
         /// <summary>
         /// Initializes the singleton instance of the command.
@@ -89,12 +79,12 @@ namespace VSIXProject1
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "Command1";
+            string message = string.Format(CultureInfo.CurrentCulture, "Fuck you!");
+            string title = "Swag command";
 
             // Show a message box to prove we were here
             VsShellUtilities.ShowMessageBox(
-                this.package,
+                package,
                 message,
                 title,
                 OLEMSGICON.OLEMSGICON_INFO,
