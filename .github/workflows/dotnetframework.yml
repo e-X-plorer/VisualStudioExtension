@@ -24,7 +24,7 @@ jobs:
       run: nuget restore Extension.sln
       
     - name: Build
-      run: msbuild Extension.sln
+      run: msbuild Extension.sln /p:Configuration=Release
     
     - name: Test
       run: dotnet test --no-restore --verbosity normal
