@@ -20,10 +20,7 @@ namespace Analyzer1
     {
         private const string title = "Make uppercase";
 
-        public sealed override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(Analyzer1Analyzer.DiagnosticId); }
-        }
+        public sealed override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(Analyzer1Analyzer.DiagnosticId);
 
         public sealed override FixAllProvider GetFixAllProvider()
         {
