@@ -27,7 +27,7 @@ namespace Analyzer1
 
         //private static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
         private static DiagnosticDescriptor ClassLengthRule = new DiagnosticDescriptor("ClassLength", "Class is too long", 
-            "{0} contains {1} lines or more than {2} children. Children: {3}", "Length", DiagnosticSeverity.Warning,
+            "Class {0} contains {1}. Maximum allowed is {2}.", "Length", DiagnosticSeverity.Warning,
             isEnabledByDefault: true, description: "test");
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(ClassLengthRule);
@@ -48,10 +48,18 @@ namespace Analyzer1
             var blockChildren = childNodes.Length;
             var childrenString = Enumerable.Aggregate(childNodes, string.Empty, (current, child) => current + (child.ToString() + '\n'));
 
-            if (blockLines > MaxLineCount || blockChildren > MaxChildNodeCount)
+            if (blockLines > MaxLineCount)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ClassLengthRule, context.ContainingSymbol.Locations[0],
-                context.ContainingSymbol.Name, blockLines, blockChildren, childrenString));
+                context.ContainingSymbol.Name, blockLines + " lines", MaxLineCount));
+                return;
+            }
+
+            if (blockChildren > MaxChildNodeCount)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ClassLengthRule, context.ContainingSymbol.Locations[0],
+                    context.ContainingSymbol.Name, blockChildren + " members", MaxChildNodeCount));
+                return;
             }
         }
 
