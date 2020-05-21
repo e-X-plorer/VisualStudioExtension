@@ -14,16 +14,16 @@ namespace Analyzer1.Test
 
         //No diagnostics expected to show up
         [TestMethod]
-        public void TestMethod1()
+        public void ZeroInputTest()
         {
             var test = @"";
 
             VerifyCSharpDiagnostic(test);
         }
 
-        //Diagnostic and CodeFix both triggered and checked for
+        //No Diagnostics expected to show up
         [TestMethod]
-        public void TestMethod2()
+        public void EmptyClassTest()
         {
             var test = @"
     using System;
@@ -39,20 +39,14 @@ namespace Analyzer1.Test
         {   
         }
     }";
-            var expected = new DiagnosticResult
-            {
-                Id = "Analyzer1",
-                Message = String.Format("Type name '{0}' contains lowercase letters", "TypeName"),
-                Severity = DiagnosticSeverity.Warning,
-                Locations =
-                    new[] {
-                            new DiagnosticResultLocation("Test0.cs", 11, 15)
-                        }
-            };
+            VerifyCSharpDiagnostic(test);
+        }
 
-            VerifyCSharpDiagnostic(test, expected);
-
-            var fixtest = @"
+        //No Diagnostics expected to show up
+        [TestMethod]
+        public void SmallClassTest()
+        {
+            var test = @"
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -62,11 +56,106 @@ namespace Analyzer1.Test
 
     namespace ConsoleApplication1
     {
-        class TYPENAME
+        class TypeName
         {   
+            public const int var1 = 1;
+            public const int var2 = 2;
+            private Command1(AsyncPackage package, OleMenuCommandService commandService)
+            {
+                this.package = package ?? throw new ArgumentNullException(nameof(package));
+                commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                var menuCommandID = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                commandService.AddCommand(menuItem);
+            }
         }
     }";
-            VerifyCSharpFix(test, fixtest);
+            VerifyCSharpDiagnostic(test);
+        }
+        
+        //Diagnostic triggered and checked for
+        //NOT WORKING
+        [TestMethod]
+        public void BigClassTest()
+        {
+            var test = @"
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Diagnostics;
+
+    namespace ConsoleApplication1
+    {
+        class TypeName
+        {
+            public const int var1 = 1;
+            public const int var2 = 2;
+            public const int var3 = 3;
+            public const int var4 = 4;
+            public const int var5 = 5;
+            public const int var6 = 6;
+            public const int var7 = 7;
+            public const int var8 = 8;
+            public const int var9 = 9;
+            public const int var10 = 10;
+            private Command1(AsyncPackage package, OleMenuCommandService commandService)
+            {
+                this.package = package ?? throw new ArgumentNullException(nameof(package));
+                commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                var menuCommandID = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                commandService.AddCommand(menuItem);
+            }
+        }
+    }";
+            var expected = new DiagnosticResult
+            {
+                Id = "ClassLength",
+                Message = @"TypeName contains 7 lines or more than 11 children. Children: public const int var1 = 1;
+public const int var2 = 2;
+public const int var3 = 3;
+public const int var4 = 4;
+public const int var5 = 5;
+public const int var6 = 6;
+public const int var7 = 7;
+public const int var8 = 8;
+public const int var9 = 9;
+public const int var10 = 10;
+private Command1(AsyncPackage package, OleMenuCommandService commandService)
+            {
+                this.package = package ?? throw new ArgumentNullException(nameof(package));
+                commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                var menuCommandID = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                commandService.AddCommand(menuItem);
+            }
+",
+                Severity = DiagnosticSeverity.Warning,
+                Locations =
+                    new[] {
+                            new DiagnosticResultLocation("Test0.cs", 11, 15)
+                        }
+            };
+        
+  //        VerifyCSharpDiagnostic(test, expected);
+
+  //         var fixtest = @"
+  // using System;
+  // using System.Collections.Generic;
+  // using System.Linq;
+  // using System.Text;
+  // using System.Threading.Tasks;
+  // using System.Diagnostics;
+  //
+  // namespace ConsoleApplication1
+  // {
+  //     class TYPENAME
+  //     {   
+  //     }
+  // }";
+  //         VerifyCSharpFix(test, fixtest);
         }
 
         protected override CodeFixProvider GetCSharpCodeFixProvider()

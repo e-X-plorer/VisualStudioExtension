@@ -47,10 +47,11 @@ namespace Analyzer1
             var blockLines = childNodes.Sum(node => node.ToString().Count(c => c.Equals('\n')));
             var blockChildren = childNodes.Length;
             var childrenString = Enumerable.Aggregate(childNodes, string.Empty, (current, child) => current + (child.ToString() + '\n'));
+
             if (blockLines > MaxLineCount || blockChildren > MaxChildNodeCount)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ClassLengthRule, context.ContainingSymbol.Locations[0],
-                    context.ContainingSymbol.Name, blockLines, blockChildren, childrenString));
+                context.ContainingSymbol.Name, blockLines, blockChildren, childrenString));
             }
         }
 
