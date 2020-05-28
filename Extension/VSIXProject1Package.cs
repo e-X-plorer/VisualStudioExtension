@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using ClassLengthAnalyzer;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 

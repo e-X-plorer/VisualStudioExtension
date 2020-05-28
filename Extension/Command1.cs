@@ -63,6 +63,7 @@ namespace VSIXProject1
         {
             // Switch to the main thread - the call to AddCommand in Command1's constructor requires
             // the UI thread.
+            //Form1.ForceInitialize();
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
