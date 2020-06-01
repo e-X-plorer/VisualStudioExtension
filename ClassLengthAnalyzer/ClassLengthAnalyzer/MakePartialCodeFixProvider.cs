@@ -58,8 +58,8 @@ namespace ClassLengthAnalyzer
             var solution = document.Project.Solution;
             var oldNode = classDeclaration;
 
-            var indexIfLong = oldNode.IndexOfChildContainingNthOccurrence('\n', 16);
-            var rangeStart = Math.Min(indexIfLong == -1 ? int.MaxValue : indexIfLong, 5);
+            var indexIfLong = oldNode.IndexOfChildContainingNthOccurrence('\n', GlobalUserSettings.MaxLinesCount + 1);
+            var rangeStart = Math.Min(indexIfLong == -1 ? int.MaxValue : indexIfLong, GlobalUserSettings.MaxMemberCount);
 
             var children = oldNode.ChildNodes().ToList();
             var newNodeOldFile = oldNode
@@ -71,7 +71,8 @@ namespace ClassLengthAnalyzer
             rootOfOldFile = rootOfOldFile.ReplaceNode(oldNode, newNodeOldFile);
 
             var newNodeNewFile = oldNode.RemoveNodes(children.GetRange(0, rangeStart),
-                SyntaxRemoveOptions.KeepNoTrivia).WithoutTrivia();
+                SyntaxRemoveOptions.KeepNoTrivia).WithoutTrivia()
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
             var namespaceDeclaration = oldNode.GetParentNamespace();
 
             var rootOfNewFile = SyntaxFactory.CompilationUnit()

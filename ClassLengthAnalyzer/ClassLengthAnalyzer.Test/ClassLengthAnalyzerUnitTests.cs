@@ -113,7 +113,6 @@ namespace ClassLengthAnalyzer.Test
             };
 
             VerifyCSharpDiagnostic(test, expected);
-
         }
 
         //Diagnostic triggered on too many lines
@@ -221,8 +220,9 @@ namespace ClassLengthAnalyzer.Test
 
         }
 
+        //Diagnostic triggered on too many members, fix applied, updated and created files checked
         [TestMethod]
-        public void TestTest()
+        public void ManyMembersFixTest()
         {
             var test = @"
     namespace ConsoleApplication1
@@ -250,7 +250,39 @@ namespace ClassLengthAnalyzer.Test
             }
         }
     }";
-            VerifyCSharpFix(test, test);
+            var testUpdated = @"
+    namespace ConsoleApplication1
+    {
+    partial class TypeName
+        {
+            public int x1;
+            public int x2;
+            public int x3;
+        }
+    }";
+            var testCreated = @"namespace ConsoleApplication1
+{
+    partial class TypeName
+        {
+            public int f1()
+            {
+
+
+
+
+
+
+
+
+
+
+            }
+            public int f2()
+            {
+            }
+        }
+}";
+            VerifyCSharpCreatedFix(test, testUpdated, testCreated);
         }
 
         protected override CodeFixProvider GetCSharpCodeFixProvider()
