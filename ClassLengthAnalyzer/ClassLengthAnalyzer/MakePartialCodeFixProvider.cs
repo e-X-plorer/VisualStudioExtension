@@ -51,20 +51,35 @@ namespace ClassLengthAnalyzer
         public static async Task<Solution> MoveMembersToNewFile(IList<MemberDeclarationSyntax> nodesToSeparate,
             Document currentDocument, ClassDeclarationSyntax memberContainer, CancellationToken cancellationToken)
         {
+            var nestedHierarchy = memberContainer.GetParentClasses().ToImmutableList();
+
             var newNodeOldFile = memberContainer.RemoveNodes(nodesToSeparate, SyntaxRemoveOptions.KeepNoTrivia)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
-
-            var rootOfOldFile =
-                await memberContainer.SyntaxTree.GetRootAsync(cancellationToken) as CompilationUnitSyntax;
-            rootOfOldFile = rootOfOldFile.ReplaceNode(memberContainer, newNodeOldFile);
 
             var newNodeNewFile = memberContainer.WithMembers(new SyntaxList<MemberDeclarationSyntax>(nodesToSeparate))
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
             var namespaceDeclaration = memberContainer.GetParentNamespace();
 
+            var previousClassDeclaration = memberContainer;
+            foreach (var classDeclaration in nestedHierarchy)
+            {
+                newNodeOldFile = classDeclaration.ReplaceNode(previousClassDeclaration, newNodeOldFile)
+                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+                newNodeNewFile = classDeclaration.WithMembers(new SyntaxList<MemberDeclarationSyntax>(newNodeNewFile))
+                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+                previousClassDeclaration = classDeclaration;
+            }
+
+            var rootOfOldFile =
+                await memberContainer.SyntaxTree.GetRootAsync(cancellationToken) as CompilationUnitSyntax;
+            rootOfOldFile =
+                rootOfOldFile.ReplaceNode(nestedHierarchy.IsEmpty ? memberContainer : nestedHierarchy.Last(),
+                    newNodeOldFile);
+
             var rootOfNewFile = SyntaxFactory.CompilationUnit()
                 .AddUsings(rootOfOldFile.Usings.ToArray())
                 .AddExterns(rootOfOldFile.Externs.ToArray());
+
             rootOfNewFile = namespaceDeclaration == null
                 ? rootOfNewFile.AddMembers(newNodeNewFile)
                 : rootOfNewFile.AddMembers(SyntaxFactory.NamespaceDeclaration(namespaceDeclaration.Name,
@@ -73,7 +88,6 @@ namespace ClassLengthAnalyzer
                     new SyntaxList<MemberDeclarationSyntax>(newNodeNewFile)));
 
             var solution = currentDocument.Project.Solution;
-
             return solution
                 .WithDocumentSyntaxRoot(currentDocument.Id, Formatter.Format(rootOfOldFile, solution.Workspace))
                 .AddDocument(DocumentId.CreateNewId(currentDocument.Project.Id), currentDocument.Name,
@@ -83,7 +97,6 @@ namespace ClassLengthAnalyzer
         private async Task<Solution> MakePartialAsync(Document document, ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken)
         {
-            var solution = document.Project.Solution;
             var oldNode = classDeclaration;
 
             var indexIfLong = oldNode.IndexOfChildContainingNthOccurrence('\n', GlobalUserSettings.MaxLinesCount + 1);
@@ -94,31 +107,6 @@ namespace ClassLengthAnalyzer
             nodesToSeparate = nodesToSeparate.GetRange(rangeStart, nodesToSeparate.Count - rangeStart);
 
             return await MoveMembersToNewFile(nodesToSeparate, document, oldNode, cancellationToken);
-
-            //To be removed.
-            /*var newNodeOldFile = oldNode.RemoveNodes(nodesToSeparate, SyntaxRemoveOptions.KeepNoTrivia)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
-
-            var rootOfOldFile = await classDeclaration.SyntaxTree.GetRootAsync(cancellationToken) as CompilationUnitSyntax;
-            rootOfOldFile = rootOfOldFile.ReplaceNode(oldNode, newNodeOldFile);
-
-            var newNodeNewFile = oldNode.WithMembers(new SyntaxList<MemberDeclarationSyntax>(nodesToSeparate))
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
-            var namespaceDeclaration = oldNode.GetParentNamespace();
-
-            var rootOfNewFile = SyntaxFactory.CompilationUnit()
-                .AddUsings(rootOfOldFile.Usings.ToArray())
-                .AddExterns(rootOfOldFile.Externs.ToArray());
-            rootOfNewFile = namespaceDeclaration == null
-                ? rootOfNewFile.AddMembers(newNodeNewFile)
-                : rootOfNewFile.AddMembers(SyntaxFactory.NamespaceDeclaration(namespaceDeclaration.Name,
-                    namespaceDeclaration.Externs,
-                    namespaceDeclaration.Usings,
-                    new SyntaxList<MemberDeclarationSyntax>(newNodeNewFile)));
-
-            return solution.WithDocumentSyntaxRoot(document.Id, Formatter.Format(rootOfOldFile, solution.Workspace))
-                .AddDocument(DocumentId.CreateNewId(document.Project.Id), document.Name,
-                    Formatter.Format(rootOfNewFile, solution.Workspace));*/
         }
     }
 }

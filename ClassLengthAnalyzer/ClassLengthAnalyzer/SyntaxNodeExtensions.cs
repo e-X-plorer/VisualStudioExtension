@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -61,6 +62,23 @@ namespace ClassLengthAnalyzer
             }
 
             return allClasses;
+        }
+
+        public static IEnumerable<ClassDeclarationSyntax> GetParentClasses(this ClassDeclarationSyntax innermostClass)
+        {
+            var hierarchy = new List<ClassDeclarationSyntax>();
+            var currentNode = innermostClass.Parent;
+            while (currentNode != null)
+            {
+                if (currentNode is ClassDeclarationSyntax currentClassNode)
+                {
+                    hierarchy.Add(currentClassNode);
+                }
+
+                currentNode = currentNode.Parent;
+            }
+
+            return hierarchy;
         }
     }
 }

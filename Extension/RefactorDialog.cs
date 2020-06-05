@@ -88,33 +88,6 @@ namespace Extension
                 .MoveMembersToNewFile(nodesToSeparate, _activeDocument, selectedClassOld, CancellationToken.None)
                 .Result);
 
-            //To be removed.
-            /*var selectedClassNew = selectedClassOld.RemoveNodes(nodesToSeparate, SyntaxRemoveOptions.KeepNoTrivia)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
-            var rootOfOldFile = selectedClassOld.SyntaxTree.GetRoot() as CompilationUnitSyntax;
-            rootOfOldFile = rootOfOldFile.ReplaceNode(selectedClassOld, selectedClassNew);
-
-            var namespaceDeclaration = selectedClassOld.GetParentNamespace();
-
-            var classInNewFile =
-                selectedClassOld.WithMembers(new SyntaxList<MemberDeclarationSyntax>(nodesToSeparate))
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
-
-            var rootOfNewFile = SyntaxFactory.CompilationUnit()
-                .AddUsings(rootOfOldFile.Usings.ToArray())
-                .AddExterns(rootOfOldFile.Externs.ToArray());
-            rootOfNewFile = namespaceDeclaration == null
-                ? rootOfNewFile.AddMembers(classInNewFile)
-                : rootOfNewFile.AddMembers(SyntaxFactory.NamespaceDeclaration(namespaceDeclaration.Name,
-                    namespaceDeclaration.Externs,
-                    namespaceDeclaration.Usings,
-                    new SyntaxList<MemberDeclarationSyntax>(classInNewFile)));
-
-            solution.Workspace.TryApplyChanges(solution.WithDocumentSyntaxRoot(_activeDocument.Id,
-                Formatter.Format(rootOfOldFile, solution.Workspace))
-                .AddDocument(DocumentId.CreateNewId(_activeDocument.Project.Id), _activeDocument.Name,
-                    Formatter.Format(rootOfNewFile, solution.Workspace)));*/
-
             Close();
         }
     }
