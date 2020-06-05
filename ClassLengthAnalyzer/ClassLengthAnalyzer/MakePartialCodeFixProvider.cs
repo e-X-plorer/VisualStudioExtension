@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.Design.Serialization;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -11,10 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.CodeAnalysis.Workspaces;
+using Microsoft.CodeAnalysis.Formatting;
 
 namespace ClassLengthAnalyzer
 {
@@ -52,6 +48,38 @@ namespace ClassLengthAnalyzer
                 diagnostic);
         }
 
+        public static async Task<Solution> MoveMembersToNewFile(IList<MemberDeclarationSyntax> nodesToSeparate,
+            Document currentDocument, ClassDeclarationSyntax memberContainer, CancellationToken cancellationToken)
+        {
+            var newNodeOldFile = memberContainer.RemoveNodes(nodesToSeparate, SyntaxRemoveOptions.KeepNoTrivia)
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+
+            var rootOfOldFile =
+                await memberContainer.SyntaxTree.GetRootAsync(cancellationToken) as CompilationUnitSyntax;
+            rootOfOldFile = rootOfOldFile.ReplaceNode(memberContainer, newNodeOldFile);
+
+            var newNodeNewFile = memberContainer.WithMembers(new SyntaxList<MemberDeclarationSyntax>(nodesToSeparate))
+                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+            var namespaceDeclaration = memberContainer.GetParentNamespace();
+
+            var rootOfNewFile = SyntaxFactory.CompilationUnit()
+                .AddUsings(rootOfOldFile.Usings.ToArray())
+                .AddExterns(rootOfOldFile.Externs.ToArray());
+            rootOfNewFile = namespaceDeclaration == null
+                ? rootOfNewFile.AddMembers(newNodeNewFile)
+                : rootOfNewFile.AddMembers(SyntaxFactory.NamespaceDeclaration(namespaceDeclaration.Name,
+                    namespaceDeclaration.Externs,
+                    namespaceDeclaration.Usings,
+                    new SyntaxList<MemberDeclarationSyntax>(newNodeNewFile)));
+
+            var solution = currentDocument.Project.Solution;
+
+            return solution
+                .WithDocumentSyntaxRoot(currentDocument.Id, Formatter.Format(rootOfOldFile, solution.Workspace))
+                .AddDocument(DocumentId.CreateNewId(currentDocument.Project.Id), currentDocument.Name,
+                    Formatter.Format(rootOfNewFile, solution.Workspace));
+        }
+
         private async Task<Solution> MakePartialAsync(Document document, ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken)
         {
@@ -59,19 +87,22 @@ namespace ClassLengthAnalyzer
             var oldNode = classDeclaration;
 
             var indexIfLong = oldNode.IndexOfChildContainingNthOccurrence('\n', GlobalUserSettings.MaxLinesCount + 1);
-            var rangeStart = Math.Min(indexIfLong == -1 ? int.MaxValue : indexIfLong, GlobalUserSettings.MaxMemberCount);
+            var rangeStart = Math.Min(indexIfLong == -1 ? int.MaxValue : indexIfLong,
+                GlobalUserSettings.MaxMemberCount);
 
-            var children = oldNode.ChildNodes().ToList();
-            var newNodeOldFile = oldNode
-                .RemoveNodes(children.GetRange(rangeStart, children.Count - rangeStart),
-                    SyntaxRemoveOptions.KeepNoTrivia)
+            var nodesToSeparate = oldNode.Members.ToList();
+            nodesToSeparate = nodesToSeparate.GetRange(rangeStart, nodesToSeparate.Count - rangeStart);
+
+            return await MoveMembersToNewFile(nodesToSeparate, document, oldNode, cancellationToken);
+
+            //To be removed.
+            /*var newNodeOldFile = oldNode.RemoveNodes(nodesToSeparate, SyntaxRemoveOptions.KeepNoTrivia)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
 
             var rootOfOldFile = await classDeclaration.SyntaxTree.GetRootAsync(cancellationToken) as CompilationUnitSyntax;
             rootOfOldFile = rootOfOldFile.ReplaceNode(oldNode, newNodeOldFile);
 
-            var newNodeNewFile = oldNode.RemoveNodes(children.GetRange(0, rangeStart),
-                SyntaxRemoveOptions.KeepNoTrivia).WithoutTrivia()
+            var newNodeNewFile = oldNode.WithMembers(new SyntaxList<MemberDeclarationSyntax>(nodesToSeparate))
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
             var namespaceDeclaration = oldNode.GetParentNamespace();
 
@@ -85,28 +116,9 @@ namespace ClassLengthAnalyzer
                     namespaceDeclaration.Usings,
                     new SyntaxList<MemberDeclarationSyntax>(newNodeNewFile)));
 
-            return solution.WithDocumentSyntaxRoot(document.Id, rootOfOldFile)
-                .AddDocument(DocumentId.CreateNewId(document.Project.Id), document.Name, rootOfNewFile);
-        }
-
-        //To be removed.
-        private async Task<Solution> MakeUppercaseAsync(Document document, TypeDeclarationSyntax typeDecl, CancellationToken cancellationToken)
-        {
-            // Compute new uppercase name.
-            var identifierToken = typeDecl.Identifier;
-            var newName = identifierToken.Text.ToUpperInvariant();
-
-            // Get the symbol representing the type to be renamed.
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-            var typeSymbol = semanticModel.GetDeclaredSymbol(typeDecl, cancellationToken);
-
-            // Produce a new solution that has all references to that type renamed, including the declaration.
-            var originalSolution = document.Project.Solution;
-            var optionSet = originalSolution.Workspace.Options;
-            var newSolution = await Renamer.RenameSymbolAsync(document.Project.Solution, typeSymbol, newName, optionSet, cancellationToken).ConfigureAwait(false);
-
-            // Return the new solution with the now-uppercase type name.
-            return newSolution;
+            return solution.WithDocumentSyntaxRoot(document.Id, Formatter.Format(rootOfOldFile, solution.Workspace))
+                .AddDocument(DocumentId.CreateNewId(document.Project.Id), document.Name,
+                    Formatter.Format(rootOfNewFile, solution.Workspace));*/
         }
     }
 }

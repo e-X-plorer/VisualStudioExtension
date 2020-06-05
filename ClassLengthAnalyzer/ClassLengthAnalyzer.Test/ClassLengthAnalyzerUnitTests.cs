@@ -19,7 +19,7 @@ namespace ClassLengthAnalyzer.Test
 
             VerifyCSharpDiagnostic(test);
         }
-        
+
         //No Diagnostics expected to show up
         [TestMethod]
         public void EmptyClassTest()
@@ -251,21 +251,21 @@ namespace ClassLengthAnalyzer.Test
         }
     }";
             var testUpdated = @"
-    namespace ConsoleApplication1
-    {
+namespace ConsoleApplication1
+{
     partial class TypeName
-        {
-            public int x1;
-            public int x2;
-            public int x3;
-        }
-    }";
+    {
+        public int x1;
+        public int x2;
+        public int x3;
+    }
+}";
             var testCreated = @"namespace ConsoleApplication1
 {
     partial class TypeName
+    {
+        public int f1()
         {
-            public int f1()
-            {
 
 
 
@@ -276,11 +276,11 @@ namespace ClassLengthAnalyzer.Test
 
 
 
-            }
-            public int f2()
-            {
-            }
         }
+        public int f2()
+        {
+        }
+    }
 }";
             VerifyCSharpCreatedFix(test, testUpdated, testCreated);
         }

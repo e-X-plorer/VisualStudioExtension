@@ -3,11 +3,12 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Extension;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSIXProject1
+namespace Extension
 {
     /// <summary>
     /// Command handler
@@ -80,7 +81,7 @@ namespace VSIXProject1
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Fuck you!");
+            /*string message = string.Format(CultureInfo.CurrentCulture, "Fuck you!");
             string title = "Swag command";
 
             // Show a message box to prove we were here
@@ -91,6 +92,10 @@ namespace VSIXProject1
                 OLEMSGICON.OLEMSGICON_INFO,
                 OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            */
+
+            var form = new RefactorDialog();
+            form.ShowDialog();
         }
     }
 }
