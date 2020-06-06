@@ -28,68 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Text1 = new System.Windows.Forms.Label();
+            this.ComboBox = new System.Windows.Forms.ComboBox();
+            this.Text2 = new System.Windows.Forms.Label();
+            this.CheckedListBox = new System.Windows.Forms.CheckedListBox();
+            this.ApplyButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
+            // Text1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(203, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Select class from the current file to divide:";
+            this.Text1.AutoSize = true;
+            this.Text1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Text1.Location = new System.Drawing.Point(12, 9);
+            this.Text1.Name = "Text1";
+            this.Text1.Size = new System.Drawing.Size(231, 15);
+            this.Text1.TabIndex = 1;
+            this.Text1.Text = "Select class from the current file to divide:";
             // 
-            // comboBox1
+            // ComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(360, 21);
-            this.comboBox1.TabIndex = 2;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.ComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.ComboBox.FormattingEnabled = true;
+            this.ComboBox.Location = new System.Drawing.Point(12, 27);
+            this.ComboBox.Name = "ComboBox";
+            this.ComboBox.Size = new System.Drawing.Size(360, 21);
+            this.ComboBox.TabIndex = 2;
+            this.ComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
-            // label2
+            // Text2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 59);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(207, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Select members to move to a separate file:";
+            this.Text2.AutoSize = true;
+            this.Text2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Text2.Location = new System.Drawing.Point(12, 58);
+            this.Text2.Name = "Text2";
+            this.Text2.Size = new System.Drawing.Size(239, 15);
+            this.Text2.TabIndex = 3;
+            this.Text2.Text = "Select members to move to a separate file:";
             // 
-            // checkedListBox1
+            // CheckedListBox
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 75);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(360, 244);
-            this.checkedListBox1.TabIndex = 4;
+            this.CheckedListBox.FormattingEnabled = true;
+            this.CheckedListBox.Location = new System.Drawing.Point(12, 76);
+            this.CheckedListBox.Name = "CheckedListBox";
+            this.CheckedListBox.Size = new System.Drawing.Size(360, 244);
+            this.CheckedListBox.TabIndex = 4;
             // 
-            // button1
+            // ApplyButton
             // 
-            this.button1.Location = new System.Drawing.Point(15, 326);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(357, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Move members";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ApplyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ApplyButton.Location = new System.Drawing.Point(15, 326);
+            this.ApplyButton.Name = "ApplyButton";
+            this.ApplyButton.Size = new System.Drawing.Size(357, 23);
+            this.ApplyButton.TabIndex = 5;
+            this.ApplyButton.Text = "Move members";
+            this.ApplyButton.UseVisualStyleBackColor = true;
+            this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
             // 
             // RefactorDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(384, 361);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.checkedListBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.ApplyButton);
+            this.Controls.Add(this.CheckedListBox);
+            this.Controls.Add(this.Text2);
+            this.Controls.Add(this.ComboBox);
+            this.Controls.Add(this.Text1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -97,7 +101,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "RefactorDialog";
+            this.Text = "Refactoring";
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -105,10 +109,10 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label Text1;
+        private System.Windows.Forms.ComboBox ComboBox;
+        private System.Windows.Forms.Label Text2;
+        private System.Windows.Forms.CheckedListBox CheckedListBox;
+        private System.Windows.Forms.Button ApplyButton;
     }
 }

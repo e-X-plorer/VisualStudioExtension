@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using ClassLengthAnalyzer;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
@@ -25,9 +24,9 @@ namespace Extension
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(VSIXProject1Package.PackageGuidString)]
+    [Guid(ExtensionPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    public sealed class VSIXProject1Package : AsyncPackage
+    public sealed class ExtensionPackage : AsyncPackage
     {
         /// <summary>
         /// VSIXProject1Package GUID string.
@@ -49,6 +48,7 @@ namespace Extension
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await Command1.InitializeAsync(this);
+            await Command2.InitializeAsync(this);
         }
 
         #endregion

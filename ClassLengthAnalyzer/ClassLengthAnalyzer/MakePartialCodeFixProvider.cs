@@ -99,9 +99,9 @@ namespace ClassLengthAnalyzer
         {
             var oldNode = classDeclaration;
 
-            var indexIfLong = oldNode.IndexOfChildContainingNthOccurrence('\n', GlobalUserSettings.MaxLinesCount + 1);
+            var indexIfLong = oldNode.IndexOfChildContainingNthOccurrence('\n', Settings.Default.MaxLinesCount + 1);
             var rangeStart = Math.Min(indexIfLong == -1 ? int.MaxValue : indexIfLong,
-                GlobalUserSettings.MaxMemberCount);
+                Settings.Default.MaxMemberCount);
 
             var nodesToSeparate = oldNode.Members.ToList();
             nodesToSeparate = nodesToSeparate.GetRange(rangeStart, nodesToSeparate.Count - rangeStart);

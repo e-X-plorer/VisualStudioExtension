@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -43,6 +43,11 @@ namespace ClassLengthAnalyzer
 
         private static void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
+            if (!Settings.Default.Enabled)
+            {
+                return;
+            }
+
             var childNodes = context.Node.ChildNodes().ToImmutableArray();
             var blockChildren = childNodes.Length;
 
@@ -54,17 +59,17 @@ namespace ClassLengthAnalyzer
 
             var blockLines = context.Node.ToString().Count(c => c.Equals('\n'));
 
-            if (blockChildren > GlobalUserSettings.MaxMemberCount)
+            if (blockChildren > Settings.Default.MaxMemberCount)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ClassLengthRule, context.ContainingSymbol.Locations[0],
-                    context.ContainingSymbol.Name, blockChildren + " members", GlobalUserSettings.MaxMemberCount));
+                    context.ContainingSymbol.Name, blockChildren + " members", Settings.Default.MaxMemberCount));
                 return;
             }
 
-            if (blockLines > GlobalUserSettings.MaxLinesCount)
+            if (blockLines > Settings.Default.MaxLinesCount)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ClassLengthRule, context.ContainingSymbol.Locations[0],
-                    context.ContainingSymbol.Name, blockLines + " lines", GlobalUserSettings.MaxLinesCount));
+                    context.ContainingSymbol.Name, blockLines + " lines", Settings.Default.MaxLinesCount));
                 return;
             }
         }
