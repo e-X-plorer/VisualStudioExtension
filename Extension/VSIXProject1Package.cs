@@ -5,7 +5,7 @@ using ClassLengthAnalyzer;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSIXProject1
+namespace Extension
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.

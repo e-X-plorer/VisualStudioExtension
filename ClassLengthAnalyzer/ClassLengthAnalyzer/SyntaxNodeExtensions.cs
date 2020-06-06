@@ -1,10 +1,12 @@
-﻿using System.Collections.Immutable;
+﻿using System.CodeDom;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ClassLengthAnalyzer
 {
-    internal static class SyntaxNodeExtensions
+    public static class SyntaxNodeExtensions
     {
         public static NamespaceDeclarationSyntax GetParentNamespace(this SyntaxNode node)
         {
@@ -43,6 +45,40 @@ namespace ClassLengthAnalyzer
             }
 
             return -1;
+        }
+
+        public static IEnumerable<ClassDeclarationSyntax> GetClassesFromNode(this SyntaxNode root)
+        {
+            var allClasses = new List<ClassDeclarationSyntax>();
+            var currentChildren = root.ChildNodes().ToImmutableArray();
+            foreach (var node in currentChildren)
+            {
+                if (node is ClassDeclarationSyntax classDeclarationSyntax)
+                {
+                    allClasses.Add(classDeclarationSyntax);
+                }
+
+                allClasses.AddRange(GetClassesFromNode(node));
+            }
+
+            return allClasses;
+        }
+
+        public static IEnumerable<ClassDeclarationSyntax> GetParentClasses(this ClassDeclarationSyntax innermostClass)
+        {
+            var hierarchy = new List<ClassDeclarationSyntax>();
+            var currentNode = innermostClass.Parent;
+            while (currentNode != null)
+            {
+                if (currentNode is ClassDeclarationSyntax currentClassNode)
+                {
+                    hierarchy.Add(currentClassNode);
+                }
+
+                currentNode = currentNode.Parent;
+            }
+
+            return hierarchy;
         }
     }
 }
