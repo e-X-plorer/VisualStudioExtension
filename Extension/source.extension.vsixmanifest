@@ -3,8 +3,7 @@
     <Metadata>
         <Identity Id="PartialClassAnalyzer.9e1ea189-b8f6-46b9-bf54-7f9861b4e032" Version="1.0" Language="en-US" Publisher="Арсений Полежаев" />
         <DisplayName>Partial Class Analyzer</DisplayName>
-        <Description xml:space="preserve">Contains diagnostic analyzer which invokes diagnostics on classes which are tool long in order to divide them into several source files by making said classes partial.
-Users also have an option to manually decide which members of a class to move to a separate file.Conatins </Description>
+        <Description xml:space="preserve">Manual class partitioning and diagnostic which determines whether class should be made partial.</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />

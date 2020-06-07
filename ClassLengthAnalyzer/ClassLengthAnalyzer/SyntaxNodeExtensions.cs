@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ClassLengthAnalyzer
@@ -78,6 +79,13 @@ namespace ClassLengthAnalyzer
             }
 
             return hierarchy;
+        }
+
+        public static ClassDeclarationSyntax AddPartialModifierIfNotPresent(this ClassDeclarationSyntax node)
+        {
+            return node.Modifiers.Any(SyntaxKind.PartialKeyword)
+                ? node
+                : node.AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
         }
     }
 }

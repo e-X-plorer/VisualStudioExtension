@@ -54,19 +54,19 @@ namespace ClassLengthAnalyzer
             var nestedHierarchy = memberContainer.GetParentClasses().ToImmutableList();
 
             var newNodeOldFile = memberContainer.RemoveNodes(nodesToSeparate, SyntaxRemoveOptions.KeepNoTrivia)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+                .AddPartialModifierIfNotPresent();
 
             var newNodeNewFile = memberContainer.WithMembers(new SyntaxList<MemberDeclarationSyntax>(nodesToSeparate))
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
-            var namespaceDeclaration = memberContainer.GetParentNamespace();
+                .AddPartialModifierIfNotPresent();
 
+            var namespaceDeclaration = memberContainer.GetParentNamespace();
             var previousClassDeclaration = memberContainer;
             foreach (var classDeclaration in nestedHierarchy)
             {
                 newNodeOldFile = classDeclaration.ReplaceNode(previousClassDeclaration, newNodeOldFile)
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+                    .AddPartialModifierIfNotPresent();
                 newNodeNewFile = classDeclaration.WithMembers(new SyntaxList<MemberDeclarationSyntax>(newNodeNewFile))
-                    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+                    .AddPartialModifierIfNotPresent();
                 previousClassDeclaration = classDeclaration;
             }
 
