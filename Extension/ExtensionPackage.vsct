@@ -15,14 +15,14 @@
         defining some of the constants that we will use inside the file. -->
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
-  <Extern href="stdidcmd.h"/>
+  <Extern href="stdidcmd.h" />
 
   <!--This header contains the command ids for the menus provided by the shell. -->
-  <Extern href="vsshlids.h"/>
+  <Extern href="vsshlids.h" />
 
   <!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
-  <Commands package="guidVSIXProject1Package">
+  <Commands package="guidExtensionPackage">
     <!-- Inside this section we have different sub-sections: one for the menus, another
     for the menu groups, one for the buttons (the actual commands), one for the combos
     and the last one for the bitmaps used. Each element is identified by a command id that
@@ -36,8 +36,8 @@
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidVSIXProject1PackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      <Group guid="guidExtensionPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
       </Group>
     </Groups>
 
@@ -52,11 +52,18 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidVSIXProject1PackageCmdSet" id="Command1Id" priority="0x0100" type="Button">
-        <Parent guid="guidVSIXProject1PackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidExtensionPackageCmdSet" id="MoveMembersCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke Command1</ButtonText>
+          <ButtonText>Move class members ...</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidExtensionPackageCmdSet" id="cmdidSettingsCommand" priority="0x0100" type="Button">
+        <Parent guid="guidExtensionPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages1" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Partial class analyzer settings</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -68,21 +75,32 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\Command1.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+      <Bitmap guid="guidImages" href="Resources\Command1.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages1" href="Resources\Command2.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
 
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidVSIXProject1Package" value="{3f2cd86b-9459-40c5-9f74-df0f235ca225}" />
+    <GuidSymbol name="guidExtensionPackage" value="{3f2cd86b-9459-40c5-9f74-df0f235ca225}" />
 
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidVSIXProject1PackageCmdSet" value="{dd2902c0-b53a-482f-a16c-eb724ce66320}">
+    <GuidSymbol name="guidExtensionPackageCmdSet" value="{dd2902c0-b53a-482f-a16c-eb724ce66320}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <IDSymbol name="Command1Id" value="0x0100" />
+      <IDSymbol name="MoveMembersCommandId" value="0x0100" />
+      <IDSymbol value="4129" name="cmdidSettingsCommand" />
     </GuidSymbol>
 
-    <GuidSymbol name="guidImages" value="{499ba094-6625-4cce-a43e-c75b0f9afd1a}" >
+    <GuidSymbol name="guidImages" value="{499ba094-6625-4cce-a43e-c75b0f9afd1a}">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{cbfc7bae-5cca-48b1-b2a4-828bb8a9d32e}" name="guidImages1">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

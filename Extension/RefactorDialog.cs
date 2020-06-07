@@ -45,25 +45,27 @@ namespace Extension
             _activeDocument = solution.GetDocument(documentId);
             var syntaxRootTask = _activeDocument.GetSyntaxRootAsync();
             var classesInCurrentFile = syntaxRootTask.Result.GetClassesFromNode();
-            comboBox1.DataSource = classesInCurrentFile;
-            comboBox1.DisplayMember = "Identifier";
+            var classNames = classesInCurrentFile.Select(classDeclaration => classDeclaration.Identifier.ValueText);
+            ComboBox.DataSource = classesInCurrentFile;
+            ComboBox.DisplayMember = "Identifier";
+            ComboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!(comboBox1.SelectedItem is ClassDeclarationSyntax selectedClass))
+            if (!(ComboBox.SelectedItem is ClassDeclarationSyntax selectedClass))
             {
                 //do something
                 return;
             }
 
             var members = selectedClass.Members.ToList();
-            checkedListBox1.DataSource = members;
+            CheckedListBox.DataSource = members;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ApplyButton_Click(object sender, EventArgs e)
         {
-            if (checkedListBox1.CheckedItems.Count == 0)
+            if (CheckedListBox.CheckedItems.Count == 0)
             {
                 VsShellUtilities.ShowMessageBox(ServiceProvider.GlobalProvider,
                     "Select at least one member to move to a separate file.", "No members selected",
@@ -72,7 +74,7 @@ namespace Extension
                 return;
             }
 
-            if (!(comboBox1.SelectedItem is ClassDeclarationSyntax selectedClassOld))
+            if (!(ComboBox.SelectedItem is ClassDeclarationSyntax selectedClassOld))
             {
                 //do something
                 return;
@@ -80,7 +82,7 @@ namespace Extension
 
             var solution = _activeDocument.Project.Solution;
 
-            var checkedMembers = checkedListBox1.CheckedItems.Cast<MemberDeclarationSyntax>();
+            var checkedMembers = CheckedListBox.CheckedItems.Cast<MemberDeclarationSyntax>();
             var selectedMembers = new HashSet<MemberDeclarationSyntax>(checkedMembers, new NodeEqualityComparer());
             var nodesToSeparate = selectedClassOld.Members.Where(node => selectedMembers.Contains(node)).ToList();
 
