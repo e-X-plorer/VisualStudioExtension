@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ClassLengthAnalyzer;
 
@@ -36,11 +37,13 @@ namespace Extension
         private void MaxLinesInputField_TypeValidationCompleted(object sender, TypeValidationEventArgs e)
         {
             _maxLinesSetting = (int)e.ReturnValue;
+            MaxLinesInputField.Text = MaxLinesInputField.Text.Replace(" ", string.Empty);
         }
 
         private void MaxMembersInputField_TypeValidationCompleted(object sender, TypeValidationEventArgs e)
         {
             _maxMembersSetting = (int)e.ReturnValue;
+            MaxMembersInputField.Text = MaxMembersInputField.Text.Replace(" ", string.Empty);
         }
 
         private void RevertButton_Click(object sender, EventArgs e)
