@@ -20,7 +20,6 @@
         }
         
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e) {
-            this.Upgrade();
         }
     }
 }
