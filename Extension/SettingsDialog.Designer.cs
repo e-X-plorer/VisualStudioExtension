@@ -118,8 +118,7 @@
             // 
             // SettingsDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(384, 141);
             this.Controls.Add(this.ApplyButton);
             this.Controls.Add(this.RevertButton);
@@ -138,7 +137,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Partial class analyzer settings";
-            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

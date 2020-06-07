@@ -86,8 +86,7 @@
             // 
             // RefactorDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(384, 361);
             this.Controls.Add(this.ApplyButton);
             this.Controls.Add(this.CheckedListBox);
@@ -102,7 +101,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Refactoring";
-            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

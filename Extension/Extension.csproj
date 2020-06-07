@@ -47,8 +47,8 @@
     <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Command1.cs" />
-    <Compile Include="Command2.cs" />
+    <Compile Include="MoveMembersCommand.cs" />
+    <Compile Include="SettingsCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefactorDialog.cs">
       <SubType>Form</SubType>

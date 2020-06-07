@@ -52,18 +52,18 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidExtensionPackageCmdSet" id="Command1Id" priority="0x0100" type="Button">
+      <Button guid="guidExtensionPackageCmdSet" id="MoveMembersCommandId" priority="0x0100" type="Button">
         <Parent guid="guidExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke Command1</ButtonText>
+          <ButtonText>Move class members ...</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidExtensionPackageCmdSet" id="cmdidCommand2" priority="0x0100" type="Button">
+      <Button guid="guidExtensionPackageCmdSet" id="cmdidSettingsCommand" priority="0x0100" type="Button">
         <Parent guid="guidExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages1" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke Command2</ButtonText>
+          <ButtonText>Partial class analyzer settings</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -87,8 +87,8 @@
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidExtensionPackageCmdSet" value="{dd2902c0-b53a-482f-a16c-eb724ce66320}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
-      <IDSymbol name="Command1Id" value="0x0100" />
-      <IDSymbol value="4129" name="cmdidCommand2" />
+      <IDSymbol name="MoveMembersCommandId" value="0x0100" />
+      <IDSymbol value="4129" name="cmdidSettingsCommand" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{499ba094-6625-4cce-a43e-c75b0f9afd1a}">
