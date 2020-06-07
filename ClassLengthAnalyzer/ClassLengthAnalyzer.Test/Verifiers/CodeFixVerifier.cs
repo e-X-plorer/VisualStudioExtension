@@ -127,23 +127,7 @@ namespace TestHelper
             }
 
             //after applying all of the code fixes, compare the resulting string to the inputted one
-            string expect = "";
-            string actual = "";
-            foreach (char c in newSource)
-            {
-                if (c != '\n' && c != '\t' && c != ' ')
-                {
-                    expect += c;
-                }
-            }
-            foreach (char c in GetStringFromDocument(document))
-            {
-                if (c != '\n' && c != '\t' && c != ' ')
-                {
-                    actual += c;
-                }
-            }
-            Assert.AreEqual(expect, actual);
+            Assert.AreEqual(newSource, GetStringFromDocument(document));
         }
         private void VerifyCreatedFix(string language, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string oldSource, string[] newSource, int? codeFixIndex, bool allowNewCompilerDiagnostics)
         {
@@ -206,19 +190,28 @@ namespace TestHelper
             {
                 string expect = "";
                 string actual = "";
+                bool startOfLine = true;
                 foreach (char c in newSource[j])
                 {
-                    if (c != '\n' && c != '\t' && c != ' ')
-                    {
+                    if (c == '\n')
+                        startOfLine = true;
+					else if(!startOfLine || (c != '\t' && c != ' '))
+					{
                         expect += c;
+                        startOfLine = false;
                     }
                 }
                 ++j;
+
+                startOfLine = true;
                 foreach (char c in GetStringFromDocument(doc))
                 {
-                    if (c != '\n' && c != '\t' && c != ' ')
+                    if (c == '\n')
+                        startOfLine = true;
+                    else if (!startOfLine || (c != '\t' && c != ' '))
                     {
                         actual += c;
+                        startOfLine = false;
                     }
                 }
                 Assert.AreEqual(expect, actual);

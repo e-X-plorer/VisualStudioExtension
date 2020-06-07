@@ -579,7 +579,7 @@ namespace ClassLengthAnalyzer.Test
             VerifyCSharpDiagnostic(test, expectedManyMembers, expectedManyLines);
         }
 
-        //Diagnostic triggered on too many lines in 2nd class
+        //Diagnostic triggered on too many lines in 2nd class and fixed
         [TestMethod]
         public void SmallAndManyLinesFixTest()
         {
@@ -666,30 +666,30 @@ namespace ClassLengthAnalyzer.Test
             }
         }";
             var testCreated = @"
-usingSystem;
-usingSystem.Collections.Generic;
-usingSystem.Linq;
-usingSystem.Text;
-usingSystem.Threading.Tasks;
-usingSystem.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
-namespaceConsoleApplication1
+namespace ConsoleApplication1
 {
-partialclassClass2
+partial class Class2
 {
 
-privateCommand1(AsyncPackagepackage,OleMenuCommandServicecommandService)
+private Command1(AsyncPackage package, OleMenuCommandService commandService)
 {
-this.package=package??thrownewArgumentNullException(nameof(package));
-commandService=commandService??thrownewArgumentNullException(nameof(commandService));
-varmenuCommandID=newCommandID(CommandSet,CommandId);
-varmenuItem=newMenuCommand(this.Execute,menuCommandID);
+this.package = package ?? throw new ArgumentNullException(nameof(package));
+commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+var menuCommandID = new CommandID(CommandSet, CommandId);
+var menuItem = new MenuCommand(this.Execute, menuCommandID);
 commandService.AddCommand(menuItem);
 
-this.package=package??thrownewArgumentNullException(nameof(package));
-commandService=commandService??thrownewArgumentNullException(nameof(commandService));
-varmenuCommandID=newCommandID(CommandSet,CommandId);
-varmenuItem=newMenuCommand(this.Execute,menuCommandID);
+this.package = package ?? throw new ArgumentNullException(nameof(package));
+commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+var menuCommandID = new CommandID(CommandSet, CommandId);
+var menuItem = new MenuCommand(this.Execute, menuCommandID);
 commandService.AddCommand(menuItem);
 }
 }
