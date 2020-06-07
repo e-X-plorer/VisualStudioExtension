@@ -127,8 +127,23 @@ namespace TestHelper
             }
 
             //after applying all of the code fixes, compare the resulting string to the inputted one
-            var actual = GetStringFromDocument(document);
-            Assert.AreEqual(newSource, actual);
+            string expect = "";
+            string actual = "";
+            foreach (char c in newSource)
+            {
+                if (c != '\n' && c != '\t' && c != ' ')
+                {
+                    expect += c;
+                }
+            }
+            foreach (char c in GetStringFromDocument(document))
+            {
+                if (c != '\n' && c != '\t' && c != ' ')
+                {
+                    actual += c;
+                }
+            }
+            Assert.AreEqual(expect, actual);
         }
         private void VerifyCreatedFix(string language, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string oldSource, string[] newSource, int? codeFixIndex, bool allowNewCompilerDiagnostics)
         {
@@ -189,7 +204,24 @@ namespace TestHelper
 
             foreach (Document doc in document.Project.Documents)
             {
-                Assert.AreEqual(newSource[j++], GetStringFromDocument(doc));
+                string expect = "";
+                string actual = "";
+                foreach (char c in newSource[j])
+                {
+                    if (c != '\n' && c != '\t' && c != ' ')
+                    {
+                        expect += c;
+                    }
+                }
+                ++j;
+                foreach (char c in GetStringFromDocument(doc))
+                {
+                    if (c != '\n' && c != '\t' && c != ' ')
+                    {
+                        actual += c;
+                    }
+                }
+                Assert.AreEqual(expect, actual);
             }
         }
     }

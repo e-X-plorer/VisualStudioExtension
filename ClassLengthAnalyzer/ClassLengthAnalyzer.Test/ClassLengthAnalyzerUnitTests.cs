@@ -577,7 +577,126 @@ namespace ClassLengthAnalyzer.Test
                     }
             };
             VerifyCSharpDiagnostic(test, expectedManyMembers, expectedManyLines);
-        }     
+        }
+
+        //Diagnostic triggered on too many lines in 2nd class
+        [TestMethod]
+        public void SmallAndManyLinesFixTest()
+        {
+            var test = @"
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Diagnostics;
+
+    namespace ConsoleApplication1
+    {
+        class Class1
+        {
+            public const int var1 = 1;
+            public const int var2 = 2;
+            public const int var3 = 3;
+
+            private Command1(AsyncPackage package, OleMenuCommandService commandService)
+            {
+                this.package = package ?? throw new ArgumentNullException(nameof(package));
+                commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                var menuCommandID = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                commandService.AddCommand(menuItem);
+            }
+        }
+        
+        class Class2
+        {
+            public const int var1 = 1;
+            public const int var2 = 2;
+            public const int var3 = 3;
+            
+            private Command1(AsyncPackage package, OleMenuCommandService commandService)
+            {
+                this.package = package ?? throw new ArgumentNullException(nameof(package));
+                commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                var menuCommandID = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                commandService.AddCommand(menuItem);
+
+                this.package = package ?? throw new ArgumentNullException(nameof(package));
+                commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                var menuCommandID = new CommandID(CommandSet, CommandId);
+                var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                commandService.AddCommand(menuItem);
+            }
+        }
+    }"; 
+            
+            var testUpdated = @"
+        using System;
+        using System.Collections.Generic;
+        using System.Linq;
+        using System.Text;
+        using System.Threading.Tasks;
+        using System.Diagnostics;
+    
+        namespace ConsoleApplication1
+        {
+            class Class1
+            {
+                public const int var1 = 1;
+                public const int var2 = 2;
+                public const int var3 = 3;
+    
+                private Command1(AsyncPackage package, OleMenuCommandService commandService)
+                {
+                    this.package = package ?? throw new ArgumentNullException(nameof(package));
+                    commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+                    var menuCommandID = new CommandID(CommandSet, CommandId);
+                    var menuItem = new MenuCommand(this.Execute, menuCommandID);
+                    commandService.AddCommand(menuItem);
+                }
+            }
+    
+        partial class Class2
+            {
+                public const int var1 = 1;
+                public const int var2 = 2;
+                public const int var3 = 3;
+            }
+        }";
+            var testCreated = @"
+usingSystem;
+usingSystem.Collections.Generic;
+usingSystem.Linq;
+usingSystem.Text;
+usingSystem.Threading.Tasks;
+usingSystem.Diagnostics;
+
+namespaceConsoleApplication1
+{
+partialclassClass2
+{
+
+privateCommand1(AsyncPackagepackage,OleMenuCommandServicecommandService)
+{
+this.package=package??thrownewArgumentNullException(nameof(package));
+commandService=commandService??thrownewArgumentNullException(nameof(commandService));
+varmenuCommandID=newCommandID(CommandSet,CommandId);
+varmenuItem=newMenuCommand(this.Execute,menuCommandID);
+commandService.AddCommand(menuItem);
+
+this.package=package??thrownewArgumentNullException(nameof(package));
+commandService=commandService??thrownewArgumentNullException(nameof(commandService));
+varmenuCommandID=newCommandID(CommandSet,CommandId);
+varmenuItem=newMenuCommand(this.Execute,menuCommandID);
+commandService.AddCommand(menuItem);
+}
+}
+}";
+
+            VerifyCSharpCreatedFix(test, testUpdated, testCreated);
+        }
 
         protected override CodeFixProvider GetCSharpCodeFixProvider()
         {
