@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using EnvDTE;
-using System.Windows.Controls;
 using ClassLengthAnalyzer;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using Extension.Properties;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
@@ -38,14 +31,12 @@ namespace Extension
             var documentId = solution.GetDocumentIdsWithFilePath(activeDocument.FullName).FirstOrDefault();
             if (documentId == null)
             {
-                //do something
-                return;
+                throw new Exception(Resources.UnexpectedErrorMessage);
             }
 
             _activeDocument = solution.GetDocument(documentId);
             var syntaxRootTask = _activeDocument.GetSyntaxRootAsync();
             var classesInCurrentFile = syntaxRootTask.Result.GetClassesFromNode();
-            var classNames = classesInCurrentFile.Select(classDeclaration => classDeclaration.Identifier.ValueText);
             ComboBox.DataSource = classesInCurrentFile;
             ComboBox.DisplayMember = "Identifier";
             ComboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
@@ -55,8 +46,7 @@ namespace Extension
         {
             if (!(ComboBox.SelectedItem is ClassDeclarationSyntax selectedClass))
             {
-                //do something
-                return;
+                throw new Exception(Resources.UnexpectedErrorMessage);
             }
 
             var members = selectedClass.Members.ToList();
@@ -68,16 +58,30 @@ namespace Extension
             if (CheckedListBox.CheckedItems.Count == 0)
             {
                 VsShellUtilities.ShowMessageBox(ServiceProvider.GlobalProvider,
-                    "Select at least one member to move to a separate file.", "No members selected",
-                    OLEMSGICON.OLEMSGICON_CRITICAL, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    Resources.NoMembersSelectedMessage, Resources.NoMembersSelectedTitle,
+                    OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                return;
+            }
+
+            if (FileNameBox.Text.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
+            {
+                VsShellUtilities.ShowMessageBox(ServiceProvider.GlobalProvider,
+                    Resources.IllegalCharactersMessage, Resources.IllegalCharactersTitle,
+                    OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK,
                     OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
                 return;
             }
 
             if (!(ComboBox.SelectedItem is ClassDeclarationSyntax selectedClassOld))
             {
-                //do something
-                return;
+                throw new Exception(Resources.UnexpectedErrorMessage);
+            }
+
+            var newFileName = FileNameBox.Text;
+            if (!newFileName.EndsWith(".cs"))
+            {
+                newFileName += ".cs";
             }
 
             var solution = _activeDocument.Project.Solution;
@@ -86,9 +90,21 @@ namespace Extension
             var selectedMembers = new HashSet<MemberDeclarationSyntax>(checkedMembers, new NodeEqualityComparer());
             var nodesToSeparate = selectedClassOld.Members.Where(node => selectedMembers.Contains(node)).ToList();
 
-            solution.Workspace.TryApplyChanges(MakePartialCodeFixProvider
-                .MoveMembersToNewFile(nodesToSeparate, _activeDocument, selectedClassOld, CancellationToken.None)
-                .Result);
+            try
+            {
+                solution.Workspace.TryApplyChanges(MakePartialCodeFixProvider
+                    .MoveMembersToNewFile(nodesToSeparate, _activeDocument, newFileName, selectedClassOld,
+                        CancellationToken.None)
+                    .Result);
+            }
+            catch (ArgumentException exception)
+            {
+                VsShellUtilities.ShowMessageBox(ServiceProvider.GlobalProvider,
+                    exception.Message + "\n\nOperation cancelled.",
+                    "Exception occured",
+                    OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            }
 
             Close();
         }

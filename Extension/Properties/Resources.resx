@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
-    <value>Class {0} contains {1}. Maximum allowed is {2}. Class can be divided.</value>
+  <data name="IllegalCharactersMessage" xml:space="preserve">
+    <value>File name contains illegal characters.</value>
   </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
-    <value>Class is too long</value>
+  <data name="IllegalCharactersTitle" xml:space="preserve">
+    <value>Cannot create new file</value>
+  </data>
+  <data name="NoMembersSelectedMessage" xml:space="preserve">
+    <value>Select at least one member to move to a separate file.</value>
+  </data>
+  <data name="NoMembersSelectedTitle" xml:space="preserve">
+    <value>No members selected</value>
+  </data>
+  <data name="UnexpectedErrorMessage" xml:space="preserve">
+    <value>Unexpected error occured.</value>
   </data>
 </root>

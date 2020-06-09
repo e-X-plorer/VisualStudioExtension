@@ -30,9 +30,11 @@
         {
             this.Text1 = new System.Windows.Forms.Label();
             this.ComboBox = new System.Windows.Forms.ComboBox();
-            this.Text2 = new System.Windows.Forms.Label();
+            this.Text3 = new System.Windows.Forms.Label();
             this.CheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.ApplyButton = new System.Windows.Forms.Button();
+            this.FileNameBox = new System.Windows.Forms.TextBox();
+            this.Text2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Text1
@@ -55,22 +57,22 @@
             this.ComboBox.TabIndex = 2;
             this.ComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
-            // Text2
+            // Text3
             // 
-            this.Text2.AutoSize = true;
-            this.Text2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Text2.Location = new System.Drawing.Point(12, 58);
-            this.Text2.Name = "Text2";
-            this.Text2.Size = new System.Drawing.Size(239, 15);
-            this.Text2.TabIndex = 3;
-            this.Text2.Text = "Select members to move to a separate file:";
+            this.Text3.AutoSize = true;
+            this.Text3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Text3.Location = new System.Drawing.Point(9, 103);
+            this.Text3.Name = "Text3";
+            this.Text3.Size = new System.Drawing.Size(239, 15);
+            this.Text3.TabIndex = 3;
+            this.Text3.Text = "Select members to move to a separate file:";
             // 
             // CheckedListBox
             // 
             this.CheckedListBox.FormattingEnabled = true;
-            this.CheckedListBox.Location = new System.Drawing.Point(12, 76);
+            this.CheckedListBox.Location = new System.Drawing.Point(12, 121);
             this.CheckedListBox.Name = "CheckedListBox";
-            this.CheckedListBox.Size = new System.Drawing.Size(360, 244);
+            this.CheckedListBox.Size = new System.Drawing.Size(360, 199);
             this.CheckedListBox.TabIndex = 4;
             // 
             // ApplyButton
@@ -84,13 +86,32 @@
             this.ApplyButton.UseVisualStyleBackColor = true;
             this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
             // 
+            // FileNameBox
+            // 
+            this.FileNameBox.Location = new System.Drawing.Point(12, 69);
+            this.FileNameBox.Name = "FileNameBox";
+            this.FileNameBox.Size = new System.Drawing.Size(360, 20);
+            this.FileNameBox.TabIndex = 6;
+            // 
+            // Text2
+            // 
+            this.Text2.AutoSize = true;
+            this.Text2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Text2.Location = new System.Drawing.Point(12, 51);
+            this.Text2.Name = "Text2";
+            this.Text2.Size = new System.Drawing.Size(169, 15);
+            this.Text2.TabIndex = 7;
+            this.Text2.Text = "New file to move members to:";
+            // 
             // RefactorDialog
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(384, 361);
+            this.Controls.Add(this.Text2);
+            this.Controls.Add(this.FileNameBox);
             this.Controls.Add(this.ApplyButton);
             this.Controls.Add(this.CheckedListBox);
-            this.Controls.Add(this.Text2);
+            this.Controls.Add(this.Text3);
             this.Controls.Add(this.ComboBox);
             this.Controls.Add(this.Text1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -109,8 +130,10 @@
         #endregion
         private System.Windows.Forms.Label Text1;
         private System.Windows.Forms.ComboBox ComboBox;
-        private System.Windows.Forms.Label Text2;
+        private System.Windows.Forms.Label Text3;
         private System.Windows.Forms.CheckedListBox CheckedListBox;
         private System.Windows.Forms.Button ApplyButton;
+        private System.Windows.Forms.TextBox FileNameBox;
+        private System.Windows.Forms.Label Text2;
     }
 }

@@ -24,7 +24,6 @@ namespace ClassLengthAnalyzer
 
         public sealed override FixAllProvider GetFixAllProvider()
         {
-            // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/FixAllProvider.md for more information on Fix All Providers
             return WellKnownFixAllProviders.BatchFixer;
         }
 
@@ -32,7 +31,6 @@ namespace ClassLengthAnalyzer
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            // MakePartialAsync: Replace the following code with your own analysis, generating a CodeAction for each fix to suggest
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
@@ -49,7 +47,8 @@ namespace ClassLengthAnalyzer
         }
 
         public static async Task<Solution> MoveMembersToNewFile(IList<MemberDeclarationSyntax> nodesToSeparate,
-            Document currentDocument, ClassDeclarationSyntax memberContainer, CancellationToken cancellationToken)
+            Document currentDocument, string newDocumentName, ClassDeclarationSyntax memberContainer,
+            CancellationToken cancellationToken)
         {
             var nestedHierarchy = memberContainer.GetParentClasses().ToImmutableList();
 
@@ -90,7 +89,7 @@ namespace ClassLengthAnalyzer
             var solution = currentDocument.Project.Solution;
             return solution
                 .WithDocumentSyntaxRoot(currentDocument.Id, Formatter.Format(rootOfOldFile, solution.Workspace))
-                .AddDocument(DocumentId.CreateNewId(currentDocument.Project.Id), currentDocument.Name,
+                .AddDocument(DocumentId.CreateNewId(currentDocument.Project.Id), newDocumentName,
                     Formatter.Format(rootOfNewFile, solution.Workspace));
         }
 
@@ -106,7 +105,7 @@ namespace ClassLengthAnalyzer
             var nodesToSeparate = oldNode.Members.ToList();
             nodesToSeparate = nodesToSeparate.GetRange(rangeStart, nodesToSeparate.Count - rangeStart);
 
-            return await MoveMembersToNewFile(nodesToSeparate, document, oldNode, cancellationToken);
+            return await MoveMembersToNewFile(nodesToSeparate, document, document.Name, oldNode, cancellationToken);
         }
     }
 }
