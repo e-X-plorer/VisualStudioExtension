@@ -1,18 +1,14 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSIXProject1
+namespace Extension
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class Command1
+    internal sealed class MoveMembersCommand
     {
         /// <summary>
         /// Command ID.
@@ -30,12 +26,12 @@ namespace VSIXProject1
         private readonly AsyncPackage package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Command1"/> class.
+        /// Initializes a new instance of the <see cref="MoveMembersCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private Command1(AsyncPackage package, OleMenuCommandService commandService)
+        private MoveMembersCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -48,7 +44,7 @@ namespace VSIXProject1
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static Command1 Instance { get; private set; }
+        public static MoveMembersCommand Instance { get; private set; }
 
         /// <summary>
         /// Gets the service provider from the owner package.
@@ -61,13 +57,13 @@ namespace VSIXProject1
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in Command1's constructor requires
+            // Switch to the main thread - the call to AddCommand in MoveMembersCommand's constructor requires
             // the UI thread.
             //Form1.ForceInitialize();
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new Command1(package, commandService);
+            Instance = new MoveMembersCommand(package, commandService);
         }
 
         /// <summary>
@@ -80,17 +76,9 @@ namespace VSIXProject1
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Fuck you!");
-            string title = "Swag command";
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            var form = new RefactorDialog();
+            form.ShowDialog();
         }
     }
 }

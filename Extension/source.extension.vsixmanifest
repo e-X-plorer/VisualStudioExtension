@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" ?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VSIXProject1.9e1ea189-b8f6-46b9-bf54-7f9861b4e032" Version="1.0" Language="en-US" Publisher="Арсений Полежаев" />
-        <DisplayName>VSIXProject1</DisplayName>
-        <Description xml:space="preserve">Empty VSIX Project.</Description>
+        <Identity Id="PartialClassAnalyzer.9e1ea189-b8f6-46b9-bf54-7f9861b4e032" Version="1.0" Language="en-US" Publisher="Арсений Полежаев" />
+        <DisplayName>Partial Class Analyzer</DisplayName>
+        <Description xml:space="preserve">Manual class partitioning and diagnostic which determines whether class should be made partial.</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
@@ -17,5 +17,6 @@
     <Assets>
         <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="ClassLengthAnalyzer" Path="|ClassLengthAnalyzer|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="ClassLengthAnalyzer" Path="|ClassLengthAnalyzer|" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     </Assets>
 </PackageManifest>

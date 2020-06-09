@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClassLengthAnalyzer {
+namespace Extension.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ClassLengthAnalyzer {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ClassLengthAnalyzer.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Extension.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,47 @@ namespace ClassLengthAnalyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class {0} contains {1}. Maximum allowed is {2}. Class can be divided..
+        ///   Looks up a localized string similar to File name contains illegal characters..
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string IllegalCharactersMessage {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("IllegalCharactersMessage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class is too long.
+        ///   Looks up a localized string similar to Cannot create new file.
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string IllegalCharactersTitle {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("IllegalCharactersTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select at least one member to move to a separate file..
+        /// </summary>
+        internal static string NoMembersSelectedMessage {
+            get {
+                return ResourceManager.GetString("NoMembersSelectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No members selected.
+        /// </summary>
+        internal static string NoMembersSelectedTitle {
+            get {
+                return ResourceManager.GetString("NoMembersSelectedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error occured..
+        /// </summary>
+        internal static string UnexpectedErrorMessage {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorMessage", resourceCulture);
             }
         }
     }
