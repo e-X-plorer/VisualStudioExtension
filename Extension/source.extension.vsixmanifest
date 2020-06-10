@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" ?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="PartialClassAnalyzer.9e1ea189-b8f6-46b9-bf54-7f9861b4e032" Version="1.0" Language="en-US" Publisher="Арсений Полежаев" />
+        <Identity Id="PartialClassAnalyzer.9e1ea189-b8f6-46b9-bf54-7f9861b4e032" Version="0.1" Language="en-US" Publisher="Arseny Polezhaev, Andrey Kozlov, Ilya Zinovev" />
         <DisplayName>Partial Class Analyzer</DisplayName>
         <Description xml:space="preserve">Manual class partitioning and diagnostic which determines whether class should be made partial.</Description>
+        <Icon>Icon.png</Icon>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />

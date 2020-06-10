@@ -34,7 +34,6 @@ namespace ClassLengthAnalyzer
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-            //Find the type declaration identified by the diagnostic.
             var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf()
                 .OfType<ClassDeclarationSyntax>().First();
 
@@ -46,6 +45,14 @@ namespace ClassLengthAnalyzer
                 diagnostic);
         }
 
+        /// <summary>
+        /// Main code fix logic. Also used by refactoring dialog window (member separator).
+        /// </summary>
+        /// <param name="nodesToSeparate">Nodes which should be moved to a separate file.</param>
+        /// <param name="currentDocument">Document affected by this code fix.</param>
+        /// <param name="newDocumentName">Name of a new document to be created.</param>
+        /// <param name="memberContainer">Class which contains members to separate.</param>
+        /// <returns></returns>
         public static async Task<Solution> MoveMembersToNewFile(IList<MemberDeclarationSyntax> nodesToSeparate,
             Document currentDocument, string newDocumentName, ClassDeclarationSyntax memberContainer,
             CancellationToken cancellationToken)

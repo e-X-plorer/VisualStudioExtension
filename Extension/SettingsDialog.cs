@@ -6,6 +6,7 @@ namespace Extension
 {
     public partial class SettingsDialog : Form
     {
+        // Settings not yet applied.
         private bool _enabledSetting;
         private int _maxLinesSetting;
         private int _maxMembersSetting;

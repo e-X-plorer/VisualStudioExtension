@@ -18,6 +18,9 @@ namespace Extension
 {
     public partial class RefactorDialog : Form
     {
+        /// <summary>
+        /// Currently active document in a Visual Studio instance.
+        /// </summary>
         private readonly Document _activeDocument;
 
         public RefactorDialog()

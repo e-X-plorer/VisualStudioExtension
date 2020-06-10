@@ -11,13 +11,11 @@ namespace ClassLengthAnalyzer
     public class ClassLengthAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "ClassTooLong";
+        private const string Category = "Design";
 
         private static readonly LocalizableString Title = Resources.AnalyzerTitle;
         private static readonly LocalizableString MessageFormat = Resources.AnalyzerMessageFormat;
 
-        private const string Category = "Design";
-
-        //private static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
         private static readonly DiagnosticDescriptor ClassLengthRule = new DiagnosticDescriptor(DiagnosticId, Title,
             MessageFormat, Category, DiagnosticSeverity.Warning, true);
 
@@ -29,6 +27,9 @@ namespace ClassLengthAnalyzer
             context.RegisterSyntaxNodeAction(AnalyzeSyntaxNode, SyntaxKind.ClassDeclaration);
         }
 
+        /// <summary>
+        /// Main logic of analysis.
+        /// </summary>
         private static void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
             if (!Settings.Default.Enabled)

@@ -50,10 +50,11 @@
             // ComboBox
             // 
             this.ComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.ComboBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ComboBox.FormattingEnabled = true;
             this.ComboBox.Location = new System.Drawing.Point(12, 27);
             this.ComboBox.Name = "ComboBox";
-            this.ComboBox.Size = new System.Drawing.Size(360, 21);
+            this.ComboBox.Size = new System.Drawing.Size(460, 22);
             this.ComboBox.TabIndex = 2;
             this.ComboBox.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
@@ -69,10 +70,11 @@
             // 
             // CheckedListBox
             // 
+            this.CheckedListBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CheckedListBox.FormattingEnabled = true;
             this.CheckedListBox.Location = new System.Drawing.Point(12, 121);
             this.CheckedListBox.Name = "CheckedListBox";
-            this.CheckedListBox.Size = new System.Drawing.Size(360, 199);
+            this.CheckedListBox.Size = new System.Drawing.Size(460, 191);
             this.CheckedListBox.TabIndex = 4;
             // 
             // ApplyButton
@@ -80,7 +82,7 @@
             this.ApplyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ApplyButton.Location = new System.Drawing.Point(15, 326);
             this.ApplyButton.Name = "ApplyButton";
-            this.ApplyButton.Size = new System.Drawing.Size(357, 23);
+            this.ApplyButton.Size = new System.Drawing.Size(457, 23);
             this.ApplyButton.TabIndex = 5;
             this.ApplyButton.Text = "Move members";
             this.ApplyButton.UseVisualStyleBackColor = true;
@@ -88,16 +90,17 @@
             // 
             // FileNameBox
             // 
-            this.FileNameBox.Location = new System.Drawing.Point(12, 69);
+            this.FileNameBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FileNameBox.Location = new System.Drawing.Point(12, 70);
             this.FileNameBox.Name = "FileNameBox";
-            this.FileNameBox.Size = new System.Drawing.Size(360, 20);
+            this.FileNameBox.Size = new System.Drawing.Size(460, 22);
             this.FileNameBox.TabIndex = 6;
             // 
             // Text2
             // 
             this.Text2.AutoSize = true;
             this.Text2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Text2.Location = new System.Drawing.Point(12, 51);
+            this.Text2.Location = new System.Drawing.Point(12, 52);
             this.Text2.Name = "Text2";
             this.Text2.Size = new System.Drawing.Size(169, 15);
             this.Text2.TabIndex = 7;
@@ -106,7 +109,7 @@
             // RefactorDialog
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(384, 361);
+            this.ClientSize = new System.Drawing.Size(484, 361);
             this.Controls.Add(this.Text2);
             this.Controls.Add(this.FileNameBox);
             this.Controls.Add(this.ApplyButton);
