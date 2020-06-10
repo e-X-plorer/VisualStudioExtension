@@ -4,7 +4,7 @@ using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
-namespace VSIXProject1
+namespace Extension
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -24,9 +24,9 @@ namespace VSIXProject1
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(VSIXProject1Package.PackageGuidString)]
+    [Guid(ExtensionPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    public sealed class VSIXProject1Package : AsyncPackage
+    public sealed class ExtensionPackage : AsyncPackage
     {
         /// <summary>
         /// VSIXProject1Package GUID string.
@@ -47,7 +47,8 @@ namespace VSIXProject1
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            await Command1.InitializeAsync(this);
+            await MoveMembersCommand.InitializeAsync(this);
+            await SettingsCommand.InitializeAsync(this);
         }
 
         #endregion
