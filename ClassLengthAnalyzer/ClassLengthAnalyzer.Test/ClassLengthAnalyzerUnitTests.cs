@@ -1126,7 +1126,7 @@ commandService.AddCommand(menuItem);
             var testUpdated = @"
     namespace ConsoleApplication1
     {
-        class Class1
+    partial class Class1
         {
             public const int var1 = 1;
             public partial class InnerClass
@@ -1141,9 +1141,12 @@ commandService.AddCommand(menuItem);
     }";
             var testCreated = @"namespace ConsoleApplication1
     {
-        public partial class InnerClass
+        partial class Class1
         {
-            public const int var6 = 6;
+            public partial class InnerClass
+            {
+                public const int var6 = 6;
+            }
         }
     }";
             VerifyCSharpCreatedFix(test, testUpdated, testCreated);
