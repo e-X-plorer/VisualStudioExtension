@@ -1,5 +1,7 @@
 ![.NETFramework](https://github.com/e-X-plorer/VisualStudioExtension/workflows/.NETFramework/badge.svg)
 
+[**Video showcase**](https://www.youtube.com/watch?v=zani-Uus3Gs)
+
 # Diagnostic analyzer
 Diagnostic analyzer which suggests making classes partial if they exceed user-defined boundaries.
 
